@@ -18,6 +18,6 @@ export default {
 <style>
 body {
   background-size: cover;
-  background-color:lavender;
+  background-color:aliceblue;
 }
 </style>
