@@ -17,16 +17,28 @@
           <router-link class="nav-link" active-class="active" :to="{name:'ranklist_index'}">排行榜</router-link>
         </li>
       </ul>
-      <u1 class="navbar-nav">
+      <u1 class="navbar-nav" v-if="$store.state.user.is_login">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Myosotis
+            {{ $store.state.user.username }}
           </a>
           <ul class="dropdown-menu">
             <li><router-link class="dropdown-item" :to="{name:'userbot_index'}">我的Bot</router-link></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">退出</a></li>
+            <li><a class="dropdown-item" href="#" @click="logout">退出</a></li>
           </ul>
+        </li>
+      </u1>
+      <u1 class="navbar-nav" v-else>
+        <li class="nav-item dropdown">
+          <router-link class="nav-link" :to="{ name: 'user_account_login'}" role="button">
+            登录
+          </router-link>
+        </li>
+        <li class="nav-item dropdown">
+          <router-link class="nav-link" :to="{ name: 'user_account_register'}" role="button">
+            注册
+          </router-link>
         </li>
       </u1>
     </div>
@@ -35,6 +47,26 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+export default {
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    let route_name = computed(() => route.name);
+
+    const logout = () => {
+      store.dispatch("logout");
+    }
+
+    return {
+      route_name,
+      logout
+    }
+  }
+}
 </script>
 
 <style scoped>

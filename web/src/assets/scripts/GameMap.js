@@ -31,7 +31,7 @@ export class GameMap extends GameObject {
         let dx = [-1, 0, 1, 0], dy = [0, 1, 0, -1];
         for (let i = 0; i < 4; i++) {
             let x = sx + dx[i], y = sy + dy[i];
-            if (!g[x][y] && this.check_connectivity(g, x, y, tx, ty)) {
+            if (g[x][y] == false && this.check_connectivity(g, x, y, tx, ty)) {
                 return true;
             }
         }
@@ -75,7 +75,7 @@ export class GameMap extends GameObject {
         }
 
         const copy_g = JSON.parse(JSON.stringify(g));
-        if (!this.check_connectivity(copy_g, this.cols - 2, 1, 1, this.rows - 2)) {
+        if (!this.check_connectivity(copy_g, this.rows - 2, 1, 1, this.cols - 2)) {
             return false;
         }
         
