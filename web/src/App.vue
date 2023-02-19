@@ -7,14 +7,14 @@
 import NavBar from './components/NavBar.vue'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap'
-import $ from 'jquery'
+//import $ from 'jquery'
 
 export default {
   components: {
     NavBar
   },
   setup() {
-    $.ajax({
+    // $.ajax({
     //   url: "http://127.0.0.1:3000/user/account/token/",
     //   type: "post",
     //   data: {
@@ -47,9 +47,9 @@ export default {
     //   url: "http://127.0.0.1:3000/user/account/register/",
     //   type: "post",
     //   data: {
-    //     username: 'hty3',
-    //     password: "phty3",
-    //     confirmedPassword: "phty3",
+    //     username: 'hty5',
+    //     password: "phty5",
+    //     confirmedPassword: "phty5",
     //   },
     //   success(resp) {
     //     console.log(resp);
@@ -57,7 +57,7 @@ export default {
     //   error(resp) {
     //     console.log(resp);
     //   }
-    });
+    // });
   }
 }
 </script>
