@@ -104,7 +104,24 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button type="button" class="btn btn-danger" @click="remove_bot(bot)">删除</button>
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" :data-bs-target="'#confirm-remove-bot' + bot.id">删除</button>
+                                        <div class="modal fade" tabindex="-1" :id="'confirm-remove-bot' + bot.id">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">提示</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>确认删除？</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-primary" @click="remove_bot(bot)">确认</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                             </tbody>
@@ -187,7 +204,7 @@ export default {
         }
 
         const update_bot = (bot) => {
-            botadd.error_message = "";
+            bot.error_message = "";
             $.ajax({
                 url: "http://127.0.0.1:3000/user/bot/update/",
                 type: "post",
@@ -223,6 +240,7 @@ export default {
                 },
                 success(resp) {
                     if (resp.error_message ==  "success") {
+                        Modal.getInstance('#confirm-remove-bot' + bot.id).hide();
                         refresh_bots();
                     }
                 }
