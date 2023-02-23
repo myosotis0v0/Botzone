@@ -1,6 +1,7 @@
 package com.botzone.backend.consumer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.botzone.backend.consumer.utils.Game;
 import com.botzone.backend.consumer.utils.JwtAuthentication;
 import com.botzone.backend.mapper.UserMapper;
 import com.botzone.backend.pojo.User;
@@ -66,16 +67,21 @@ public class WebSocketServer {
             matchPool.remove(a);
             matchPool.remove(b);
 
+            Game game = new Game(13, 14, 20);
+            game.createMap();
+
             JSONObject respA = new JSONObject();
             respA.put("event", "start-matching");
             respA.put("opponent_username", b.getUsername());
             respA.put("opponent_photo", b.getPhoto());
+            respA.put("gamemap", game.getG());
             users.get(a.getId()).sendMessage(respA.toJSONString());
 
             JSONObject respB = new JSONObject();
             respB.put("event", "start-matching");
             respB.put("opponent_username", a.getUsername());
             respB.put("opponent_photo", a.getPhoto());
+            respB.put("gamemap", game.getG());
             users.get(b.getId()).sendMessage(respB.toJSONString());
         }
     }

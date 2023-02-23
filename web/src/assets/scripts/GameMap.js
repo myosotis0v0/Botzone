@@ -3,8 +3,10 @@ import { Snake } from "./Snake";
 import { Wall } from "./Wall";
 
 export class GameMap extends GameObject {
-    constructor (ctx, parent) {
+    constructor (ctx, parent, store) {
         super();
+
+        this.store = store;
 
         this.ctx = ctx;
         this.parent = parent;
@@ -40,45 +42,8 @@ export class GameMap extends GameObject {
     }
 
     create_walls() {
-        const g = [];
-        for (let r = 0; r < this.rows; r++) {
-            g[r] = [];
-            for (let c = 0; c < this.cols; c++) {
-                g[r][c] = false;
-            }
-        }
+        const g = this.store.state.pk.gamemap;
 
-        // 四周加墙
-        for (let r = 0; r < this.rows; r++) {
-            g[r][0] = true;
-            g[r][this.cols - 1] = true;
-        }
-
-        for (let c = 0; c < this.cols; c++) {
-            g[0][c] = true;
-            g[this.rows - 1][c] = true;
-        }
-
-        // 创建随机墙
-        for (let i = 0; i < this.inner_walls_count / 2; i++)
-        {
-            for (let j = 0; j < 1000; j++) {
-                let r = parseInt(Math.random() * this.rows);
-                let c = parseInt(Math.random() * this.cols);
-                if (g[r][c] || g[this.rows - 1 - r][this.cols -1 - c] || (r === 1 && c === this.cols - 2) || (c === 1 && r === this.rows - 2)) {
-                    continue;
-                } else {
-                    g[r][c] = g[this.rows - 1 - r][this.cols -1 - c] = true;
-                    break;
-                }
-            }
-        }
-
-        const copy_g = JSON.parse(JSON.stringify(g));
-        if (!this.check_connectivity(copy_g, this.rows - 2, 1, 1, this.cols - 2)) {
-            return false;
-        }
-        
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 if (g[r][c]) {
@@ -146,11 +111,7 @@ export class GameMap extends GameObject {
     }
 
     start() {
-        for (let i = 0; i < 1000; i++) {
-            if (this.create_walls()) {
-                break;
-            }
-        }
+        this.create_walls();
 
         this.add_listening_events();
     }

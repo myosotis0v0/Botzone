@@ -20,25 +20,34 @@ export default {
 
         let socket = null;
         onMounted(() => {
+            store.state.pk.opponent_username = "player";
+            store.state.pk.opponent_photo = "https://cdn.acwing.com/media/article/image/2022/08/09/1_1db2488f17-anonymous.png";
+
             socket = new WebSocket(socketUrl);
 
             socket.onopen = () => {
                 console.log("WebSocket connected");
-                socket.commit("updateSocket", socket);
+                store.commit("updateSocket", socket);
             }
 
             socket.onmessage = msg => {
+                console.log(JSON.parse(msg.data));
                 const data = JSON.parse(msg.data);
                 if (data.event === "start-matching") {
-                    store.commit("updateOpponent", JSON.stringify({
+                    store.commit("updateOpponent", {
                         username: data.opponent_username,
                         photo: data.opponent_photo,
-                    }));
+                    });
+                    setTimeout(() => {
+                        store.commit("updateStatus", "playing");
+                    }, 2000);
+                    store.commit("updateGamemap", data.gamemap);
                 }
             }
 
             socket.onclose = () => {
                 console.log("WebSocket disconnected");
+                store.commit("updateStatus", "matching");
             }
         });
 
